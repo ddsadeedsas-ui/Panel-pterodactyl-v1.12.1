@@ -1,24 +1,24 @@
 #!/bin/bash
 
-# 1. Update and install dependencies (Ubuntu/Debian)
-apt update && apt install -y software-properties-common curl apt-transport-https ca-certificates gnupg
-add-apt-repository -y ppa:ondrej/php
-apt update
-apt install -y php8.2 php8.2-{common,cli,gd,mysql,mbstring,bcmath,xml,fpm,curl,zip} mariadb-server nginx tar unzip git redis-server
+# 1. Install unzip and curl
+apt update && apt install -y unzip curl
 
-# 2. Setup Panel Directory
+# 2. Create the panel folder
 mkdir -p /var/www/pterodactyl
 cd /var/www/pterodactyl
 
-# 3. Download YOUR panel files from your repo
-echo "Downloading your Pterodactyl files..."
+# 3. Download YOUR panel.zip
+# Replace 'panel.zip' with your exact filename if it's different
+echo "Downloading your panel files..."
 curl -L https://github.com -o panel.zip
-unzip main.zip
-mv Panel-pterodactyl-v1.12.1-main/* .
-rm -rf Panel-pterodactyl-v1.12.1-main main.zip
 
-# 4. Set standard permissions
+# 4. Extract and Cleanup
+echo "Unpacking..."
+unzip -o panel.zip
+rm panel.zip
+
+# 5. Fix permissions
 chmod -R 755 storage/* bootstrap/cache
 chown -R www-data:www-data /var/www/pterodactyl/*
 
-echo "Successfully installed to /var/www/pterodactyl!"
+echo "Done! Files are ready in /var/www/pterodactyl"
